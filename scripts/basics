@@ -1,0 +1,27 @@
+#!/bin/bash
+
+set -e  # Exit immediately if a command exits with a non-zero status.
+set -x  # All executed commands are printed to the terminal
+
+mv /tmp/boot /usr/local/boot
+
+FILE=moodle-latest-37.tgz
+
+aptitude update ; aptitude install -y php php-cgi php-curl php-gd php-intl php-mbstring php-pear php-pgsql php-soap php-xmlrpc php-zip
+
+sed -i '/^post_max_size/c\post_max_size = 0' /etc/php/*/apache2/php.ini
+sed -i '/^upload_max_filesize/c\upload_max_filesize = 0' /etc/php/*/apache2/php.ini
+
+sed -i 's/var\/www\/html/var\/www\/moodle/' /etc/apache2/sites-available/000-default.conf
+
+wget https://download.moodle.org/download.php/direct/stable37/$FILE
+tar -C /var/www -xvzf $FILE
+rm -r $FILE /var/www/html
+mkdir /var/www/moodledata
+chown -R www-data:www-data /var/www/moodle ; chmod -R 755 /var/www/moodle
+chown -R www-data:www-data /var/www/moodledata ; chmod -R 755 /var/www/moodledata
+
+mv /tmp/moodle.cron /etc/cron.d/moodle
+
+apt-get -y autoremove ; aptitude -y autoclean ; apt-get -y autoclean
+rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /root/.aptitude
