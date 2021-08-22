@@ -1,0 +1,36 @@
+name: Docker Moodle
+
+on:
+  schedule:
+    - cron: '0 0 * * 6'
+  
+  workflow_dispatch:
+  
+  repository_dispatch:
+    types: [debian-updated]
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      -
+        name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - 
+        name: Build and push Docker images
+        uses: docker/build-push-action@v2.7.0
+        with:
+          context: .
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ github.actor }}/moodle:latest
