@@ -1,4 +1,4 @@
-FROM ghcr.io/fernandoenzo/debian:testing
+FROM ghcr.io/fernandoenzo/debian:stable
 MAINTAINER Fernando Enzo Guarini (fernandoenzo@gmail.com)
 
 COPY scripts/ /tmp
