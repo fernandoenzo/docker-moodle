@@ -5,7 +5,7 @@ set -x  # All executed commands are printed to the terminal
 
 mv /tmp/boot /usr/local/boot
 
-FILE=moodle-latest-311.tgz
+FILE=moodle-latest-402.tgz
 
 aptitude update ; aptitude install -y php php-cgi php-curl php-gd php-intl php-mbstring php-pear php-pgsql php-soap php-xmlrpc php-zip
 
@@ -14,7 +14,7 @@ sed -i '/^upload_max_filesize/c\upload_max_filesize = 0' /etc/php/*/apache2/php.
 
 sed -i 's/var\/www\/html/var\/www\/moodle/' /etc/apache2/sites-available/000-default.conf
 
-wget https://download.moodle.org/download.php/direct/stable311/$FILE
+wget https://download.moodle.org/download.php/direct/stable402/$FILE
 tar -C /var/www -xvzf $FILE
 rm -r $FILE /var/www/html
 mkdir /var/www/moodledata
