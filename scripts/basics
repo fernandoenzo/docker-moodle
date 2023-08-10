@@ -12,7 +12,7 @@ aptitude update ; aptitude install -y php php-cgi php-curl php-gd php-intl php-m
 sed -i '/^post_max_size/c\post_max_size = 0' /etc/php/*/apache2/php.ini
 sed -i '/^upload_max_filesize/c\upload_max_filesize = 0' /etc/php/*/apache2/php.ini
 
-sed -i 's/var\/www\/html/var\/www\/moodle/' /etc/apache2/sites-available/000-default.conf
+sed -i 's~var/www/html~var/www/moodle~' /etc/apache2/sites-available/000-default.conf
 
 wget https://download.moodle.org/download.php/direct/stable402/$FILE
 tar -C /var/www -xvzf $FILE
